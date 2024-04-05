@@ -1,0 +1,99 @@
+int ledPin[] = {2, 3, 4, 5, 6, 9, 10, 11};
+
+
+int speakerPin = 12;
+
+
+void setup() {
+
+
+  Serial.begin(9600);
+
+
+  // Set all pins to output
+
+
+  for (int x = 0; x < 8; x++) {
+
+
+    pinMode(ledPin[x], OUTPUT);
+
+
+  }
+
+
+  pinMode(speakerPin, OUTPUT);
+
+
+}
+
+
+void loop() {
+
+
+  int sensorValue = analogRead(0);
+
+
+  Serial.println(sensorValue, DEC);
+
+
+
+  // Map sensor value to the LED index
+
+
+  int index = map(sensorValue, 470, 492 , 0, 7);
+
+
+ 
+
+
+  // Turn off all LEDs222
+
+
+  for (int i = 0; i < 8; i++) {
+
+
+    digitalWrite(ledPin[i], LOW);
+
+
+  }
+
+
+
+
+
+
+  // Turn on the corresponding LED
+
+
+  if (index >= 0 && index < 8) {
+
+
+    digitalWrite(ledPin[index], HIGH);
+
+
+   
+
+
+    // Play sound with increasing volume
+
+
+    int frequency = 100 + index * 100; // Adjust frequency range as needed
+
+
+    int duration = 100; // Adjust duration as needed
+
+
+    tone(speakerPin, frequency, duration);
+
+
+    delay(250); // Delay to distinguish between consecutive LED lighting
+
+
+    noTone(speakerPin); // Stop the tone after playing
+
+
+  }
+
+
+}
